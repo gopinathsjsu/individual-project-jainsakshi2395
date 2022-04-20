@@ -33,7 +33,7 @@ public class DatasetController {
     private void readItems(ArrayList<String> contentOfFile){
         for(int i=0;i<contentOfFile.size();i++){
             String[] splitItem = contentOfFile.get(i).split(",");
-            database.getFlights().add(new Flights(splitItem[0].trim(), splitItem[1].trim(),
+            database.getFlightsMap().put(splitItem[1].trim(),new Flights(splitItem[0].trim(), splitItem[1].trim(),
                     Integer.parseInt(splitItem[2].trim()), Double.parseDouble(splitItem[3].trim()),splitItem[4].trim(), splitItem[5].trim()));
 
         }

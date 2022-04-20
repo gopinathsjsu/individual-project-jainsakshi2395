@@ -1,17 +1,20 @@
 package test.database;
 
+import test.model.BookedFlight;
 import test.model.Bookings;
 import test.model.Flights;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 
 public class Database {
 
         private static Database databaseInstance;
 
-        private ArrayList<Flights>  flights = new ArrayList<>();
-        private ArrayList<Bookings> bookings = new ArrayList<>();
+        private HashMap<String,Flights> flightsMap = new HashMap<>();
+        private ArrayList<BookedFlight> bookings = new ArrayList<>();
 
     private Database() {}
 
@@ -22,11 +25,11 @@ public class Database {
         return databaseInstance;
     }
 
-    public ArrayList<Flights> getFlights() {
-        return flights;
+    public HashMap<String,Flights> getFlightsMap(){
+        return flightsMap;
     }
 
-        public ArrayList<Bookings> getBookings() {
+        public ArrayList<BookedFlight> getBookings() {
         return bookings;
     }
 

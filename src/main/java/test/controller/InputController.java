@@ -1,8 +1,13 @@
 package test.controller;
 
 import test.database.Database;
+import test.model.BookedFlight;
 import test.model.Bookings;
 import test.model.Flights;
+import test.statehandler.CardValidation;
+import test.statehandler.FlightValidation;
+import test.statehandler.SeatValidation;
+import test.statehandler.ValidationHandler;
 import test.utility.FileUtility;
 
 import java.io.IOException;
@@ -13,7 +18,7 @@ import java.util.HashSet;
 public class InputController {
 
     private Database database = Database.getInstance();
-    private Bookings currentBooking = new Bookings();
+    private BookedFlight currentBooking = new BookedFlight();
     private FileUtility fileUtility;
     private ArrayList<String> output = new ArrayList<>();
     private ArrayList<Bookings> bookings = new ArrayList<>();
@@ -34,7 +39,7 @@ public class InputController {
         }catch (Exception e){
             return false;
         }
-        getItems(fileUtility.getContentFile());
+        getBookings(fileUtility.getContentFile());
         return true;
     }
     public boolean checkOrder() {
@@ -44,94 +49,24 @@ public class InputController {
 
     public void calculateTotal() {
         for(Bookings booking: bookings){
-            total += booking.getNumberOfSeats()*database.getFlights().get(booking.getBookingName()).getPrice();
+            total += booking.getNumberOfSeats()*database.getFlightsMap().get(booking.getBookingName()).getPrice();
         }
         currentBooking.);
     }
 
     public double getTotal() {
-        return currentOrder.getTotalPrice();
+        return currentBooking.getTotalPrice();
     }
 
-    public void checkoutOrder() {
-        ArrayList<Flights> flights = database.getFlights();
-
-        for (Bookings booking : bookings) {
-
-            System.out.println("Calculating for booking : " + booking.getBookingName());
-
-            for (Flights flight : flights) {
-
-                if (booking.getFlightNumber().equalsIgnoreCase(flight.getFlightNumber())) {
-
-                    if (flight.getCategory().equalsIgnoreCase("Economy") && flight.getAvailableSeats() >= booking.getNumberOfSeats()) {
-                        double price = 0;
-                        if (isCardValid(booking.getCardNumber())) {
-                            price = flight.getPrice() * booking.getNumberOfSeats();
-                            int availableSeats = flight.getAvailableSeats() - booking.getNumberOfSeats();
-                            updateAvailableSeats(availableSeats,flight.getCategory(), flight.getFlightNumber());
-                        }else{
-
-                            System.err.println(">> Incorrect card details.. writing to Output.txt");
-                            String log = "Please enter correct booking details for "+ booking.getBookingName() + " : incorrect card details";
-                            writeToErrorLog(log);
-                        }
-                        amountPaid += price;
-                        System.out.println("Economy >> " + price);
-                        break;
-                    } else if (flight.getCategory().equalsIgnoreCase("Premium Economy") && flight.getAvailableSeats() >= booking.getNumberOfSeats()) {
-                        double price = 0;
-                        if (isCardValid(booking.getCardNumber())) {
-                            price = flight.getPrice() * booking.getNumberOfSeats();
-                            int availableSeats = flight.getAvailableSeats() - booking.getNumberOfSeats();
-                            updateAvailableSeats(availableSeats,flight.getCategory(), flight.getFlightNumber());
-                        }else{
-                            System.err.println(">> Incorrect card details.. writing to Output.txt");
-                            String log = "Please enter correct booking details for "+ booking.getBookingName() + " : incorrect card details";
-                            writeToErrorLog(log);
-                        }
-
-                        amountPaid += price;
-                        System.out.println("Premium Economy >> " + price);
-                        break;
-                    } else if (flight.getCategory().equalsIgnoreCase("Business") && flight.getAvailableSeats() >= booking.getNumberOfSeats()) {
-
-                        double price = 0;
-
-                        if (isCardValid(booking.getCardNumber())) {
-                            price = flight.getPrice() * booking.getNumberOfSeats();
-                            int availableSeats = flight.getAvailableSeats() - booking.getNumberOfSeats();
-                            updateAvailableSeats(availableSeats,flight.getCategory(), flight.getFlightNumber());
-                        }else{
-                            System.err.println(">> Incorrect card details.. writing to Output.txt");
-                            String log = "Please enter correct booking details for "+ booking.getBookingName() + " : incorrect card details";
-                            writeToErrorLog(log);
-                        }
-                        amountPaid += price;
-                        System.out.println("Business >> " + price);
-                        break;
-                    } else {
-                        System.err.println(">> Incorrect number of Seats.. writing to Output.txt");
-                        String log = "Please enter correct booking details for "+ booking.getBookingName() + " : invalid number of seats";
-                        writeToErrorLog(log);
-                    }
-                }else{
-
-                    System.err.println(">> Incorrect flight number.. writing to Output.txt");
-                    String log = "Please enter correct booking details for "+ booking.getBookingName() + " : invalid flight number";
-                    writeToErrorLog(log);
-
-                }
+    public void checkoutOrder() {  for(OrderItem orderItem: items){
+        Items item = database.getItemsMap().get(orderItem.getName());
+        item.setQuantity(item.getQuantity()-orderItem.getQuantity());
+    }
+        for(String credit:creditCards){
+            if(!database.getCardsSet().contains(credit)){
+                database.getCardsSet().add(credit);
             }
-
-            if (amountPaid > 0) {
-                updateAmount(booking.getBookingName(),booking.getFlightNumber(), booking.getSeatCategory(), booking.getNumberOfSeats(), amountPaid);
-            }
-
-            System.out.println("Calculation for booking ended : " + booking.getBookingName());
         }
-
-
         generateOutputFile();
     }
 
@@ -141,66 +76,77 @@ public class InputController {
         }
     }
 
-    public void getItems(ArrayList<String> fileContent){
+    public void getBookings(ArrayList<String> fileContent){
         for(String line: fileContent){
-            String[] item = line.split(",");
-            if(database.getFlightsMap().containsKey(item[0])){
-                items.add(new OrderItem(item[0],Integer.parseInt(item[1]),item[2].replaceAll("\\s+","")));
+            String[] lineData = line.split(",");
+            if(database.getFlightsMap().containsKey(lineData[1])){
+                bookings.add(new Bookings(lineData[0], lineData[1].trim(), lineData[2].trim(),Integer.parseInt(lineData[3]), lineData[4].trim()););
             }else{
-                output.add("Item "+item[0]+" not found");
+                output.add("Please enter correct booking details for"+  lineData[0] + ": invalid flight number."
+);
             }
         }
         if(!output.isEmpty()){
-            items.clear();
+            bookings.clear();
         }
     }
 
-    public boolean checkItemStock() {
+    public boolean checkAvailableSeats() {
         StringBuilder sb = new StringBuilder();
-        database.getOrdersList().add(currentOrder);
-        ValidationHandler itemPresence = new ItemPresenceValidation();
-        ValidationHandler itemStock = new ItemStockValidation();
-        ValidationHandler itemCategory = new ItemCategoryCapValidation();
-        itemPresence.nextHandler(itemStock);
-        itemStock.nextHandler(itemCategory);
-        if(!itemPresence.validate(items)){
-            output.add("One of the Item doesn't exist in the stock");
-        }else if(!itemStock.validate(items)){
-            output.add("Please correct quantities of one of the items");
-        }else if(!itemCategory.validate(items)){
-            output.add("Limit on one of the Categories has exceeded");
-        }
-        for(OrderItem orderItem: items){
-            Items item = database.getItemsMap().get(orderItem.getName());
-            if(item.getQuantity()<orderItem.getQuantity()){
+        database.getBookings().add(currentBooking);
+        ValidationHandler flightValidation = new FlightValidation();
+        ValidationHandler seatValidation = new SeatValidation();
+        ValidationHandler cardValidation = new CardValidation();
+
+        flightValidation.nextHandler(seatValidation);
+        seatValidation.nextHandler(cardValidation);
+
+            if(!flightValidation.validate(bookings)){
+                output.add("One of the Flighdoesn't exist in the stock");
+            }else if(!seatValidation.validate(bookings)){
+                output.add("Please correct quantities of one of the items");
+            }else if(!cardValidation.validate(bookings)){
+                output.add("Limit on one of the Categories has exceeded");
+            }
+
+        for(Bookings booking: bookings){
+            Flights flight = database.getFlightsMap().get(booking.getFlightNumber());
+            if(flight.getAvailableSeats()<booking.getNumberOfSeats()){
                 if(sb.length()>0)
                     sb.append(",");
-                sb.append(orderItem.getName()+"("+item.getQuantity()+")");
-            }else{
-                if(!creditCards.contains(orderItem.getCardDetails()))
-                    creditCards.add(orderItem.getCardDetails());
+                sb.append(booking.getBookingName()+"("+flight.getAvailableSeats()+")");
             }
         }
         if(sb.length()>0){
-            output.add("Please correct quantities");
+            output.add("Please enter correct booking details for : invalid number of seats");
             output.add(sb.toString());
         }
         return sb.length()==0;
     }
 
     public void generateOutputFile(){
-        //System.out.println("Zing Zing Amazing");
+
         if(output.size()==0){
+            output.add("Booking Name");
+            output.add(currentBooking.getBookingName());
+            output.add("Flight Number");
+            output.add(currentBooking.getFlightNumber());
+            output.add("Category");
+            output.add(currentBooking.getCategory());
+            output.add("Number of Seats");
+            output.add(Integer.toString(currentBooking.getNumberOfSeats()));
+            output.add("Total Price");
+            output.add(Double.toString((currentBooking.getTotalPrice())));
             output.add("Amount Paid");
-            output.add(Double.toString((currentOrder.getTotalPrice())));
+            output.add(Double.toString((currentBooking.getTotalPrice())));
             try{
-                fileHelper.writeOuput(output,false);
+                fileUtility.writeOuput(output,false);
             }catch (IOException e){
                 e.printStackTrace();
             }
         }else{
             try{
-                fileHelper.writeOuput(output,true);
+                fileUtility.writeOuput(output,true);
             }catch (IOException e){
                 e.printStackTrace();
             }
