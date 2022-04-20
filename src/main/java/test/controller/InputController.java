@@ -51,7 +51,7 @@ public class InputController {
         for(Bookings booking: bookings){
             total += booking.getNumberOfSeats()*database.getFlightsMap().get(booking.getBookingName()).getPrice();
         }
-        currentBooking.);
+        currentBooking.setTotalPrice(total);
     }
 
     public double getTotal() {
@@ -77,7 +77,7 @@ public class InputController {
         for(String line: fileContent){
             String[] lineData = line.split(",");
             if(database.getFlightsMap().containsKey(lineData[1])){
-                bookings.add(new Bookings(lineData[0], lineData[1].trim(), lineData[2].trim(),Integer.parseInt(lineData[3]), lineData[4].trim()););
+                bookings.add(new Bookings(lineData[0], lineData[1].trim(), lineData[2].trim(),Integer.parseInt(lineData[3]), lineData[4].trim()));
             }else{
                 output.add("Please enter correct booking details for"+  lineData[0] + ": invalid flight number."
 );
