@@ -33,7 +33,7 @@ public class InputController {
         output.add(str);
     }
 
-    public boolean startOrder() {
+    public boolean startBooking() {
         try{
             fileUtility.fileReader(true);
         }catch (Exception e){
@@ -42,8 +42,8 @@ public class InputController {
         getBookings(fileUtility.getContentFile());
         return true;
     }
-    public boolean checkOrder() {
-        checkItemStock();
+    public boolean checkBooking() {
+        checkAvailableSeats();
         return output.size()==0;
     }
 
@@ -58,15 +58,12 @@ public class InputController {
         return currentBooking.getTotalPrice();
     }
 
-    public void checkoutOrder() {  for(OrderItem orderItem: items){
-        Items item = database.getItemsMap().get(orderItem.getName());
-        item.setQuantity(item.getQuantity()-orderItem.getQuantity());
+    public void bookFlight() {
+        for(Bookings booking: bookings){
+        Flights flight = database.getFlightsMap().get(booking.getFlightNumber());
+        flight.setAvailableSeats(flight.getAvailableSeats()-booking.getNumberOfSeats());
     }
-        for(String credit:creditCards){
-            if(!database.getCardsSet().contains(credit)){
-                database.getCardsSet().add(credit);
-            }
-        }
+
         generateOutputFile();
     }
 
@@ -140,13 +137,13 @@ public class InputController {
             output.add("Amount Paid");
             output.add(Double.toString((currentBooking.getTotalPrice())));
             try{
-                fileUtility.writeOuput(output,false);
+                fileUtility.writeOutput(output,false);
             }catch (IOException e){
                 e.printStackTrace();
             }
         }else{
             try{
-                fileUtility.writeOuput(output,true);
+                fileUtility.writeOutput(output, true);
             }catch (IOException e){
                 e.printStackTrace();
             }
