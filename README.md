@@ -24,12 +24,17 @@ I decided to use these design patterns in my project to solve multiple problems 
 - Singleton
 - Factory
 - Chains of Responsibility
-- Iterator
 
 ### Singleton:
 - It is creational design pattern that lets you ensure that a class has only one instance, while providing the global access point to this instance.
 - This pattern is used to build the database for the application. Only the Database class is used as part of this pattern.
 - Whenever an instance of the database is needed, the getIntance() method is called so that only one instance of the object can be reused.
+
+Class Diagram: 
+
+
+<img width="699" alt="Screen Shot 2022-04-22 at 12 07 16 PM" src="https://user-images.githubusercontent.com/90986401/164782693-817be6b6-185b-4aa3-bc47-6ae1120abc1a.png">
+
 
 
 ### Factory:
@@ -39,6 +44,11 @@ I decided to use these design patterns in my project to solve multiple problems 
      - Class BookingFile
      - Class ErrorFile
 - When the respective concrete handler figures out the output should be a booking file or error file, we will create an object of OutputFile. The FileReader class is used to read and create files in the application.
+
+Class Diagram:
+
+<img width="671" alt="Screen Shot 2022-04-22 at 12 17 10 PM" src="https://user-images.githubusercontent.com/90986401/164782810-73ebee99-b0b2-4129-b7dc-ba1b26626be6.png">
+
 
 
 ### Chains of Responsilibilty:
@@ -50,9 +60,11 @@ I decided to use these design patterns in my project to solve multiple problems 
      - Class SeatValidation (to validate if seats are available or not)
 - Before we verify the booking can be processed or not, ValidationHandler object is created and will be passed on from one Handler to another using the same.
 
-### Iterator:
-The iterator pattern is used to while parsing the flight.csv file to create a flight model. It abstracts away the location from where the data is being read and allows the location to change from a file to a database (in the future) with minimal code refactoring.
 
+Class Diagram: 
+
+
+<img width="762" alt="Screen Shot 2022-04-22 at 12 31 13 PM" src="https://user-images.githubusercontent.com/90986401/164782862-440094eb-cf75-402a-8988-82262ea8225d.png">
 
 
 
