@@ -11,7 +11,7 @@ Needs Java 8 installed in the system that is running the program.
 ### Instructions to run the JAR file:
 - Opem Command Prompt in the location of JAR File. <br>(Location of JAR File is: `/Users/sakshijain/Desktop/projects/cmpe202_individual_project/cmpe202-individual-project/target/cmpe202-individual-project-1.0-SNAPSHOT.jar)`. 
 - Run the following command in the command prompt:
-`java -cp <jar_name> "<Flights.csv>" "<Sample.csv>" "<Output.csv>" "<Output.txt>"` <br>
+`java -cp <jar_name> "<Path to Flights.csv>" "<Path to Sample.csv>" "<Output.csv>" "<Output.txt>"` <br>
 
 
 For Example: <br>
