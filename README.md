@@ -67,4 +67,27 @@ Class Diagram:
 <img width="762" alt="Screen Shot 2022-04-22 at 12 31 13 PM" src="https://user-images.githubusercontent.com/90986401/164782862-440094eb-cf75-402a-8988-82262ea8225d.png">
 
 
+ Test cases: 
+
+Test Case 1- Input: Sample set given in problem statement  
+<img width="783" alt="Screen Shot 2022-04-26 at 8 03 57 PM" src="https://user-images.githubusercontent.com/90986401/165434426-1d98138a-b311-4dfe-a97e-9a49cae3f56b.png">
+
+
+<img width="604" alt="Screen Shot 2022-04-26 at 8 04 12 PM" src="https://user-images.githubusercontent.com/90986401/165434440-3e360dce-a8c3-497d-8b4d-f62938008fc9.png">
+
+
+
+<img width="736" alt="Screen Shot 2022-04-26 at 8 08 03 PM" src="https://user-images.githubusercontent.com/90986401/165434466-cc4d3bdf-eceb-4f0e-ad83-24091af50e3a.png">
+
+<img width="622" alt="Screen Shot 2022-04-26 at 8 17 11 PM" src="https://user-images.githubusercontent.com/90986401/165434501-d0ae5731-6d7c-4c2e-8f1a-cc4b0ea325b6.png">
+
+
+<img width="409" alt="Screen Shot 2022-04-26 at 8 09 30 PM" src="https://user-images.githubusercontent.com/90986401/165434533-233e3381-0199-4375-9e68-e0464e499d16.png">
+
+<img width="668" alt="Screen Shot 2022-04-26 at 8 09 50 PM" src="https://user-images.githubusercontent.com/90986401/165434537-58f71b24-5c51-4f77-8907-b7a69722c3fa.png">
+
+<img width="622" alt="Screen Shot 2022-04-26 at 8 13 37 PM" src="https://user-images.githubusercontent.com/90986401/165434625-231578cb-aa6e-41be-88f1-45182c00b26f.png![Uploading Screen Shot 2022-04-26 at 8.18.50 PM.png…]()
+">
+
+
 
